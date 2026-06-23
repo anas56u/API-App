@@ -3,6 +3,11 @@ import 'package:api_app/features/auth/data/repositories/auth_repository_impl.dar
 import 'package:api_app/features/auth/domain/usecases/login_usecase.dart';
 import 'package:api_app/features/auth/presentation/providers/auth_provider.dart';
 import 'package:api_app/features/auth/presentation/screens/login_screen.dart';
+import 'package:api_app/features/products/data/datasources/product_api_service.dart';
+import 'package:api_app/features/products/data/repositories/product_repository_impl.dart.dart';
+import 'package:api_app/features/products/domain/usecases/get_products_usecase.dart';
+import 'package:api_app/features/products/presentation/providers/product_provider.dart';
+import 'package:api_app/features/products/presentation/screens/products_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -10,10 +15,16 @@ void main() {
   final authApiService = AuthApiService();
   final authRepository = AuthRepositoryImpl(apiService: authApiService);
   final loginUseCase = LoginUsecase(repository: authRepository);
+  final productApiService = ProductApiService();
+  final productRepository = ProductRepositoryImpl(apiService: productApiService);
+  final getProductsUseCase = GetProductsUseCase(productRepository);
   runApp(
     MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (context) => AuthProvider(loginUsecase: loginUseCase)),
+        ChangeNotifierProvider(
+          create: (context) => ProductProvider(getProductsUseCase),
+        ),
       ],
       child: const MyApp(),
     ),
@@ -31,7 +42,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const LoginScreen(), 
+      home: const ProductsScreen(), 
     );
   }
 }
