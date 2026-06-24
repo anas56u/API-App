@@ -1,4 +1,5 @@
-import 'package:api_app/features/auth/presentation/screens/home_screen.dart';
+import 'package:api_app/features/auth/presentation/screens/settings_screen.dart';
+import 'package:api_app/features/home/presentation/screens/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../providers/auth_provider.dart';
@@ -44,7 +45,7 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
             ),
             const SizedBox(height: 20),
-            
+
             // حقل كلمة المرور
             TextField(
               controller: _passwordController,
@@ -62,7 +63,10 @@ class _LoginScreenState extends State<LoginScreen> {
                 padding: const EdgeInsets.only(bottom: 20),
                 child: Text(
                   authProvider.errorMessage!,
-                  style: const TextStyle(color: Colors.red, fontWeight: FontWeight.bold),
+                  style: const TextStyle(
+                    color: Colors.red,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
               ),
 
@@ -80,23 +84,31 @@ class _LoginScreenState extends State<LoginScreen> {
 
                         if (username.isEmpty || password.isEmpty) {
                           ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(content: Text('الرجاء إدخال جميع البيانات')),
+                            const SnackBar(
+                              content: Text('الرجاء إدخال جميع البيانات'),
+                            ),
                           );
                           return;
                         }
 
                         // استدعاء دالة الـ Provider المخفية باستخدام context.read (لأننا لا نريد إعادة رسم الشاشة هنا، فقط إرسال أمر)
-                        final success = await context.read<AuthProvider>().login(username, password);
+                        final success = await context
+                            .read<AuthProvider>()
+                            .login(username, password);
 
                         if (success) {
                           // إذا نجح تسجيل الدخول، يمكننا طباعة رسالة أو الانتقال للصفحة الرئيسية لاحقاً
-                           ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(content: Text('تم تسجيل الدخول بنجاح!')),
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text('تم تسجيل الدخول بنجاح!'),
+                            ),
                           );
                           Navigator.pushReplacement(
-    context,
-    MaterialPageRoute(builder: (context) => const SettingsScreen()),
-  );
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const HomeScreen(),
+                            ),
+                          );
                         }
                       },
                       child: const Text('دخول', style: TextStyle(fontSize: 18)),

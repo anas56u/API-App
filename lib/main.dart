@@ -3,6 +3,8 @@ import 'package:api_app/features/auth/data/repositories/auth_repository_impl.dar
 import 'package:api_app/features/auth/domain/usecases/login_usecase.dart';
 import 'package:api_app/features/auth/presentation/providers/auth_provider.dart';
 import 'package:api_app/features/auth/presentation/screens/login_screen.dart';
+import 'package:api_app/features/cart/presentation/providers/cart_provider.dart';
+import 'package:api_app/features/home/presentation/screens/home_screen.dart';
 import 'package:api_app/features/products/data/datasources/product_api_service.dart';
 import 'package:api_app/features/products/data/repositories/product_repository_impl.dart.dart';
 import 'package:api_app/features/products/domain/usecases/get_products_usecase.dart';
@@ -25,6 +27,7 @@ void main() {
         ChangeNotifierProvider(
           create: (context) => ProductProvider(getProductsUseCase),
         ),
+        ChangeNotifierProvider(create: (context) => CartProvider()),
       ],
       child: const MyApp(),
     ),
@@ -40,9 +43,10 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false, 
       title: 'Clean Arch App',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
+        useMaterial3: true, 
       ),
-      home: const ProductsScreen(), 
+      home: const HomeScreen(), 
     );
   }
 }

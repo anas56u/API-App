@@ -15,6 +15,7 @@ class AuthProvider extends ChangeNotifier {
 
   User? _currentUser;
   User? get currentUser => _currentUser;
+
   Future<bool> login(String username, String password) async {
     _isLoading = true;
     _errorMessage = null;

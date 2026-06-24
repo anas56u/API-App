@@ -15,13 +15,31 @@ class ProductProvider extends ChangeNotifier {
   String? _errorMessage;
   String? get errorMessage => _errorMessage;
 
-  // قائمة المنتجات التي سنجلبها من الـ API
   List<Product> _products = [];
   List<Product> get products => _products;
+  String _selectedCategory = 'الكل';
+  String get selectedCategory => _selectedCategory;
+  List<String> get categories {
+    final uniqueCategories = _products.map((p) => p.category).toSet().toList();
 
-  // دالة جلب المنتجات
+    return ['الكل', ...uniqueCategories];
+  }
+
+  List<Product> get filteredProducts {
+    if (_selectedCategory == 'الكل') {
+      return _products; // إذا كان 'الكل'، نعرض القائمة الأصلية كاملة
+    }
+    // دالة where تقوم بالبحث داخل القائمة وإرجاع المنتجات التي يطابق تصنيفها التصنيف المختار
+    return _products.where((p) => p.category == _selectedCategory).toList();
+  }
+
+  // 4. دالة لتغيير التصنيف المختار عند ضغط المستخدم على زر التصنيف
+  void changeCategory(String newCategory) {
+    _selectedCategory = newCategory;
+    notifyListeners(); // إشعار واجهة المستخدم لإعادة رسم شاشة المنتجات
+  }
+
   Future<void> fetchProducts() async {
-    // 1. نبدأ التحميل ونمسح أي أخطاء سابقة
     _isLoading = true;
     _errorMessage = null;
     notifyListeners();
