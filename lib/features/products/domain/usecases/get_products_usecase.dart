@@ -6,7 +6,7 @@ class GetProductsUseCase {
 
   GetProductsUseCase(this.repository);
 
-  Future<List<Product>> call() async {
+  Future<List<dynamic>> call() async {
     return await repository.getProducts();
   }
 }

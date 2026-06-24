@@ -16,8 +16,8 @@ class ProductProvider extends ChangeNotifier {
   String? get errorMessage => _errorMessage;
 
   // قائمة المنتجات التي سنجلبها من الـ API
-  List<Product> _products = [];
-  List<Product> get products => _products;
+  List<dynamic> _products = [];
+  List<dynamic> get products => _products;
 
   // دالة جلب المنتجات
   Future<void> fetchProducts() async {
@@ -29,12 +29,11 @@ class ProductProvider extends ChangeNotifier {
     try {
       // 2. استدعاء الـ UseCase لجلب البيانات
       final productsList = await getProductsUseCase.call();
-      
+
       // 3. حفظ البيانات في المتغير الخاص بنا
-      _products = productsList;
+      _products = List<dynamic>.from(productsList);
       _isLoading = false;
       notifyListeners(); // تنبيه الـ UI ليعرض المنتجات
-      
     } catch (e) {
       // 4. في حال حدوث خطأ
       _isLoading = false;
